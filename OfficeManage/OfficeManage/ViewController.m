@@ -33,6 +33,9 @@ static NSString *const fileCell = @"fileCell";
 
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configFilesArray) name:@"configFilesArray" object:nil];
+    
+    NSLog(@"-----------沙盒路径--------------");
+    NSLog(@"%@",NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]);
 
 }
 
@@ -67,9 +70,9 @@ static NSString *const fileCell = @"fileCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
-    NSLog(@"部分注视的是WebView浏览方法，打开就可以测试");
-    NSLog(@"部分注视的是WebView浏览方法，打开就可以测试");
-    NSLog(@"部分注视的是WebView浏览方法，打开就可以测试");
+    NSLog(@"注视的是WebView浏览方法，打开就可以测试");
+    NSLog(@"注视的是WebView浏览方法，打开就可以测试");
+    NSLog(@"注视的是WebView浏览方法，打开就可以测试");
     // 用webView预览
 //    // 文件全路径
 //    NSString *fullPath = [self.acceptedFileManger getFileFullPathWithFileName:self.filesArray[indexPath.row]];
@@ -80,6 +83,23 @@ static NSString *const fileCell = @"fileCell";
     //用QuickLoock预览
     [self quickLookFileAtIndex:indexPath.row];
     
+}
+
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //添加一个删除按钮
+    UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        
+        // 删除沙盒中文件
+        [self.acceptedFileManger deleteFileWithName:self.filesArray[indexPath.row]];
+        // 删除数组中文件
+        [self.filesArray removeObjectAtIndex:indexPath.row];
+        // 删UI
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+        
+    }];
+    
+    return @[deleteAction];
 }
 
 - (void)quickLookFileAtIndex:(NSInteger)index {

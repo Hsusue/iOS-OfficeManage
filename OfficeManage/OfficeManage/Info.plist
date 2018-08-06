@@ -10,6 +10,32 @@
 				<string></string>
 			</array>
 			<key>UTTypeIdentifier</key>
+			<string>com.HS.pptx</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>pptx</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string></string>
+			</array>
+			<key>UTTypeIdentifier</key>
+			<string>com.HS.docx</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>docx</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string></string>
+			</array>
+			<key>UTTypeIdentifier</key>
 			<string>com.HS.xlsx</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
@@ -20,6 +46,26 @@
 	</array>
 	<key>CFBundleDocumentTypes</key>
 	<array>
+		<dict>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.HS.pptx</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>pptx</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+		</dict>
+		<dict>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.HS.docx</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>docx</string>
+			<key>LSHandlerRank</key>
+			<string>Default</string>
+		</dict>
 		<dict>
 			<key>LSItemContentTypes</key>
 			<array>
