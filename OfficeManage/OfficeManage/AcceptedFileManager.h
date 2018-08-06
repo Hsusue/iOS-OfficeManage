@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+@interface FileModel : NSObject
+
+@property (copy, nonatomic) NSString *fileName;
+@property (copy, nonatomic) NSString *fileExtension;
+@property (copy, nonatomic) NSString *fileFullPath;
+@property (copy, nonatomic) NSDictionary *fileProperty;
+
+@end
+
+
+
 @interface AcceptedFileManager : NSObject
 
 
@@ -20,13 +31,13 @@
 - (NSArray *)getFileListInFolder;
 
 
-/**
- 获取文件全路径
-
- @param fileName 文件名
- @return 文件全路径
- */
-- (NSString *)getFileFullPathWithFileName:(NSString *)fileName;
+///**
+// 获取文件全路径
+//
+// @param fileName 文件名
+// @return 文件全路径
+// */
+//- (NSString *)getFileFullPathWithFileName:(NSString *)fileName;
 
 /**
  删除文件

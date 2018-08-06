@@ -18,7 +18,7 @@ static NSString *const fileCell = @"fileCell";
 
 @property (strong, nonatomic) AcceptedFileManager *acceptedFileManger;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray *filesArray;
+@property (strong, nonatomic) NSMutableArray<FileModel *> *filesArray;
 
 @end
 
@@ -34,7 +34,7 @@ static NSString *const fileCell = @"fileCell";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configFilesArray) name:@"configFilesArray" object:nil];
     
-    NSLog(@"-----------沙盒路径--------------");
+    NSLog(@"\n-----------沙盒路径--------------");
     NSLog(@"%@",NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0]);
 
 }
@@ -60,9 +60,19 @@ static NSString *const fileCell = @"fileCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:fileCell];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:fileCell];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:fileCell];
     }
-    cell.textLabel.text = self.filesArray[indexPath.row];
+    cell.textLabel.text = self.filesArray[indexPath.row].fileName;
+    if ([self.filesArray[indexPath.row].fileExtension isEqualToString:@"docx"] || [self.filesArray[indexPath.row].fileExtension isEqualToString:@"doc"]) {
+        cell.imageView.image = [UIImage imageNamed:@"word"];
+    } else if ([self.filesArray[indexPath.row].fileExtension isEqualToString:@"ppt"] || [self.filesArray[indexPath.row].fileExtension isEqualToString:@"pptx"]) {
+        cell.imageView.image = [UIImage imageNamed:@"ppt"];
+    } else if ([self.filesArray[indexPath.row].fileExtension isEqualToString:@"xlsx"] || [self.filesArray[indexPath.row].fileExtension isEqualToString:@"xls"]) {
+        cell.imageView.image = [UIImage imageNamed:@"excel"];
+    } else if ([self.filesArray[indexPath.row].fileExtension isEqualToString:@"pdf"]) {
+        cell.imageView.image = [UIImage imageNamed:@"pdf"];
+    }
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%.2fM",[[self.filesArray[indexPath.row].fileProperty valueForKey:NSFileSize] floatValue] / 1024.0 / 1024.0];
     
     return cell;
 }
@@ -90,13 +100,12 @@ static NSString *const fileCell = @"fileCell";
     UITableViewRowAction *deleteAction = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
         
         // 删除沙盒中文件
-        [self.acceptedFileManger deleteFileWithName:self.filesArray[indexPath.row]];
+        [self.acceptedFileManger deleteFileWithName:self.filesArray[indexPath.row].fileName];
         // 删除数组中文件
         [self.filesArray removeObjectAtIndex:indexPath.row];
         // 删UI
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
-        
     }];
     
     return @[deleteAction];
@@ -117,7 +126,8 @@ static NSString *const fileCell = @"fileCell";
 }
 - (id)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index {
     
-    NSString *fullPath = [self.acceptedFileManger getFileFullPathWithFileName:self.filesArray[index]];
+//    NSString *fullPath = [self.acceptedFileManger getFileFullPathWithFileName:self.filesArray[index].fileName];
+    NSString *fullPath = self.filesArray[index].fileFullPath;
     return [NSURL fileURLWithPath:fullPath];
     
 }
